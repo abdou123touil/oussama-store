@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+
+  sales     Sale[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Log {
+  id        String   @id @default(uuid())
+  action    String
+  entity    String
+  entityId  String
+  userId    String?
+  createdAt DateTime @default(now())
+}
+enum Role {
+  ADMIN
+  USER
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  name          String
+  barcode       String   @unique
+  sellingPrice  Float
+  purchasePrice Float
+  stock         Int
+  image         String?
+
+  purchaseItems PurchaseItem[]
+  salesItems    SalesItem[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Supplier {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+
+  purchases Purchase[]
+
+  createdAt DateTime @default(now())
+}
+
+model Purchase {
+  id          String   @id @default(uuid())
+  reference   String
+  supplierId  String
+  total       Float
+  status      String
+  date        DateTime
+
+  supplier    Supplier @relation(fields: [supplierId], references: [id])
+  items       PurchaseItem[]
+
+  createdAt   DateTime @default(now())
+}
+
+model PurchaseItem {
+  id            String   @id @default(uuid())
+  productId     String
+  quantity      Int
+  purchasePrice Float
+
+  purchaseId    String
+  purchase      Purchase @relation(fields: [purchaseId], references: [id])
+
+  product       Product @relation(fields: [productId], references: [id])
+}
+
+model Sale {
+  id        String   @id @default(uuid())
+  total     Float
+  profit    Float
+  date      DateTime
+
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
+
+  items     SalesItem[]
+
+  createdAt DateTime @default(now())
+}
+
+model SalesItem {
+  id           String   @id @default(uuid())
+  productId    String
+  quantity     Int
+  sellingPrice Float
+
+  saleId       String
+  sale         Sale @relation(fields: [saleId], references: [id])
+
+  product      Product @relation(fields: [productId], references: [id])
+}
