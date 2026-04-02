@@ -4,7 +4,7 @@ services:
   # 🔥 DATABASE
   db:
     image: mysql:8
-    container_name: pos_db
+    
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
