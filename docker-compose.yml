@@ -17,8 +17,7 @@ services:
     build: ./backend  # Vérifie bien que ton Dockerfile est dans ./backend et non ./backend/backend
     
     restart: always
-    ports:
-      - "3001:3001"
+    
     environment:
       DB_HOST: db
       DB_USER: root
