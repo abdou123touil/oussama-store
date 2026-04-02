@@ -33,7 +33,7 @@ services:
   # 🔥 FRONTEND
   frontend:
     build: ./frontend
-    container_name: pos_frontend
+    
     ports:
       - "3000:80"
     depends_on:
