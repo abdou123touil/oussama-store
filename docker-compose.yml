@@ -16,7 +16,7 @@ services:
 
   # 🔥 BACKEND
   backend:
-    build: ./backend/backend  # Vérifie bien que ton Dockerfile est dans ./backend et non ./backend/backend
+    build: ./backend  # Vérifie bien que ton Dockerfile est dans ./backend et non ./backend/backend
     container_name: pos_backend
     restart: always
     ports:
